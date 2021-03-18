@@ -5,6 +5,7 @@ open KeyBinds
 open WorldData
 open Graphics
 open System
+open Actors.Interfaces
 
 let mutable t = 0.;
 
@@ -16,22 +17,14 @@ let ClearFrame window=
     ClearBufferMask.ColorBufferBit
        |> GL.Clear
 
-let UpdateCamera() = 
-    GL.MatrixMode MatrixMode.Projection
+let UpdateCamera() =     
+    WD.Camera.Move (Vector3d(1.,0.,0.))
+    //WD.Camera.Pitch = WD.pitch
+    //WD.Camera.Yaw = WD.yaw
+    //WD.Camera.R = WD.r
+    //WD.Camera.ProjectView()
+    printf "location:%A\n" WD.Camera.Location
 
-    GL.LoadIdentity()
-
-    let c = 1.
-    
-    GL.Frustum (c,-c,c,-c,c,-c)
-    Matrix4d.CreatePerspectiveFieldOfView((float)Math.PI * (70./180.), 1., 0.2, 256.0)
-    |> ref
-    |> GL.LoadMatrix
-
-    GL.MatrixMode MatrixMode.Modelview 
-    Matrix4d.LookAt(WD.focus+Vector3d(cos WD.yaw * -WD.r * cos WD.pitch,  cos WD.pitch * WD.r * sin WD.yaw, sin WD.pitch * WD.r), WD.focus, Vector3d.UnitZ)
-    |> ref
-    |> GL.LoadMatrix 
 
 let UpdateFocus (d:float) = 
     let x = d*(cos WD.yaw)*WD.moveV.X-d*(sin WD.yaw)*WD.moveV.Y+WD.focus.X
@@ -58,8 +51,8 @@ let OnRenFrame (window:GameWindow) (e:FrameEventArgs)=
     GFX.DrawCubeNoShading WD.lights.Head.source 0.1 Color.Red
 
     GL.Flush()
-    UpdateCamera()
     UpdateFocus 0.001
+    UpdateCamera()    
     window.SwapBuffers()
 
 [<EntryPoint>]

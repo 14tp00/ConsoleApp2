@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Actors.fs" />
     <Compile Include="LightSource.fs" />
     <Compile Include="WorldData.fs" />
     <Compile Include="Face.fs" />

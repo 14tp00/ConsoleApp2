@@ -84,8 +84,7 @@ type GFX() =
             anchor+x-y,
             anchor-x+y,
             anchor-x-y
-
-        printf "normal = %A, v1 = %A, x = %A,y = %A\n" normal v1 x y
+               
         let fs = [Face(v00,v11,v01,c);
             Face(v00,v11,v01,c).Flipped;
             Face(v00,v10,v11,c);
