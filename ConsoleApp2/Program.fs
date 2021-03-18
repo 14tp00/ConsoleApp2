@@ -18,17 +18,17 @@ let ClearFrame window=
        |> GL.Clear
 
 let UpdateCamera() =     
-    WD.Camera.Move (Vector3d(1.,0.,0.))
-    //WD.Camera.Pitch = WD.pitch
-    //WD.Camera.Yaw = WD.yaw
-    //WD.Camera.R = WD.r
-    //WD.Camera.ProjectView()
+    WD.Camera.Location <- WD.focus
+    WD.Camera.Pitch <- WD.pitch
+    WD.Camera.Yaw <- WD.yaw
+    WD.Camera.R <- WD.r
+    WD.Camera.ProjectView()
     printf "location:%A\n" WD.Camera.Location
 
 
 let UpdateFocus (d:float) = 
-    let x = d*(cos WD.yaw)*WD.moveV.X-d*(sin WD.yaw)*WD.moveV.Y+WD.focus.X
-    let y = d*(sin WD.yaw)*WD.moveV.X+d*(cos WD.yaw)*WD.moveV.Y+WD.focus.Y
+    let x = d*(-cos WD.yaw)*WD.moveV.X-d*(sin WD.yaw)*WD.moveV.Y+WD.focus.X
+    let y = d*(sin WD.yaw)*WD.moveV.X+d*(-cos WD.yaw)*WD.moveV.Y+WD.focus.Y
     let z = d*WD.moveV.Z+WD.focus.Z
 
     WD.focus <- Vector3d(x,y,z)
@@ -51,7 +51,7 @@ let OnRenFrame (window:GameWindow) (e:FrameEventArgs)=
     GFX.DrawCubeNoShading WD.lights.Head.source 0.1 Color.Red
 
     GL.Flush()
-    UpdateFocus 0.001
+    UpdateFocus 0.01
     UpdateCamera()    
     window.SwapBuffers()
 
